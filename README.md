@@ -37,6 +37,18 @@ _published:_
 
 ```
 npm install usertrails@1.0.0 --save
+
+const usertrails = require('usertrails');
+
+const configuration = new usertrails.Configuration({
+    baseOptions: {
+        headers: {
+            'key': "product-key-from-dashboard"
+        }
+    }
+});
+
+const client = new usertrails.UsertrailsApi(configuration);
 ```
 
 _unPublished (not recommended):_
