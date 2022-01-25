@@ -49,6 +49,9 @@ const configuration = new usertrails.Configuration({
 });
 
 const client = new usertrails.UsertrailsApi(configuration);
+
+client.profile()...
+client.record()...
 ```
 
 _unPublished (development):_
