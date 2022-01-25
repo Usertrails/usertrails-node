@@ -1,4 +1,4 @@
-## usertrails@1.0.0
+## Usertrails@1.0.0
 
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
@@ -51,7 +51,7 @@ const configuration = new usertrails.Configuration({
 const client = new usertrails.UsertrailsApi(configuration);
 ```
 
-_unPublished (not recommended):_
+_unPublished (development):_
 
 ```
 npm install PATH_TO_GENERATED_PACKAGE --save
