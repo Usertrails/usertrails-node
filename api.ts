@@ -72,78 +72,36 @@ export enum ModelErrorErrorTypeEnum {
  */
 export interface Profile {
     /**
-     * Your Usertrails API `client_id`. The `client_id` is required and may be provided either in the `Usertrails-client` header or as part of a request body.
+     * Documented
      * @type {string}
      * @memberof Profile
      */
-    'client': string;
-    /**
-     * Your Usertrails API `secret`. The `secret` is required and may be provided either in the `Usertrails-secret` header or as part of a request body.
-     * @type {string}
-     * @memberof Profile
-     */
-    'secret': string;
-    /**
-     * Your Usertrails API `client_id`. The `client_id` is required and may be provided either in the `Usertrails-client` header or as part of a request body.
-     * @type {string}
-     * @memberof Profile
-     */
-    'environment'?: string;
+    'name': string;
     /**
      * Documented
      * @type {string}
      * @memberof Profile
      */
-    'id'?: string;
+    'image': string;
     /**
      * Documented
-     * @type {object}
+     * @type {string}
      * @memberof Profile
      */
-    'data'?: object;
+    'email'?: string;
 }
 /**
- * Request to list connected applications for a user.
+ * Record a user trail.
  * @export
  * @interface Record
  */
 export interface Record {
     /**
-     * Your Usertrails API `client_id`. The `client_id` is required and may be provided either in the `Usertrails-client` header or as part of a request body.
-     * @type {string}
-     * @memberof Record
-     */
-    'client': string;
-    /**
-     * Your Usertrails API `secret`. The `secret` is required and may be provided either in the `Usertrails-secret` header or as part of a request body.
-     * @type {string}
-     * @memberof Record
-     */
-    'secret': string;
-    /**
-     * Your Usertrails API `client_id`. The `client_id` is required and may be provided either in the `Usertrails-client` header or as part of a request body.
-     * @type {string}
-     * @memberof Record
-     */
-    'environment'?: string;
-    /**
-     * Documented
-     * @type {string}
-     * @memberof Record
-     */
-    'id'?: string;
-    /**
-     * Documented
-     * @type {string}
-     * @memberof Record
-     */
-    'tag'?: string;
-    /**
      * Documented
      * @type {object}
      * @memberof Record
      */
-    'data'?: object;
+    'data'?: object | null;
 }
 
 /**
@@ -155,11 +113,14 @@ export const UsertrailsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * This method will create a profile to which you can attach a trail, most important part of this is the {id} keyword.
          * @summary Creates a User Profile for your Product.
+         * @param {string} id Profile Id &#x60;Unique&#x60;
          * @param {Profile} profile 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        profile: async (profile: Profile, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        profile: async (id: string, profile: Profile, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('profile', 'id', id)
             // verify required parameter 'profile' is not null or undefined
             assertParamExists('profile', 'profile', profile)
             const localVarPath = `/packages/profile`;
@@ -180,6 +141,10 @@ export const UsertrailsApiAxiosParamCreator = function (configuration?: Configur
             // authentication secret required
             await setApiKeyToObject(localVarHeaderParameter, "secret", configuration)
 
+            if (id !== undefined && id !== null) {
+                localVarHeaderParameter['id'] = String(id);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -197,13 +162,17 @@ export const UsertrailsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * This method will create a trail tagged to the unique {profile} {id}
          * @summary Records a trail of the User Profile.
-         * @param {Record} record 
+         * @param {string} id Profile Id &#x60;Unique&#x60;
+         * @param {string} tag Record tag &#x60;Chosen&#x60;
+         * @param {Record} [record] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        record: async (record: Record, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'record' is not null or undefined
-            assertParamExists('record', 'record', record)
+        record: async (id: string, tag: string, record?: Record, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('record', 'id', id)
+            // verify required parameter 'tag' is not null or undefined
+            assertParamExists('record', 'tag', tag)
             const localVarPath = `/packages/record`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -221,6 +190,14 @@ export const UsertrailsApiAxiosParamCreator = function (configuration?: Configur
 
             // authentication secret required
             await setApiKeyToObject(localVarHeaderParameter, "secret", configuration)
+
+            if (id !== undefined && id !== null) {
+                localVarHeaderParameter['id'] = String(id);
+            }
+
+            if (tag !== undefined && tag !== null) {
+                localVarHeaderParameter['tag'] = String(tag);
+            }
 
 
     
@@ -249,23 +226,26 @@ export const UsertrailsApiFp = function(configuration?: Configuration) {
         /**
          * This method will create a profile to which you can attach a trail, most important part of this is the {id} keyword.
          * @summary Creates a User Profile for your Product.
+         * @param {string} id Profile Id &#x60;Unique&#x60;
          * @param {Profile} profile 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async profile(profile: Profile, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Profile>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.profile(profile, options);
+        async profile(id: string, profile: Profile, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Profile>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.profile(id, profile, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * This method will create a trail tagged to the unique {profile} {id}
          * @summary Records a trail of the User Profile.
-         * @param {Record} record 
+         * @param {string} id Profile Id &#x60;Unique&#x60;
+         * @param {string} tag Record tag &#x60;Chosen&#x60;
+         * @param {Record} [record] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async record(record: Record, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Record>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.record(record, options);
+        async record(id: string, tag: string, record?: Record, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Record>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.record(id, tag, record, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -281,22 +261,25 @@ export const UsertrailsApiFactory = function (configuration?: Configuration, bas
         /**
          * This method will create a profile to which you can attach a trail, most important part of this is the {id} keyword.
          * @summary Creates a User Profile for your Product.
+         * @param {string} id Profile Id &#x60;Unique&#x60;
          * @param {Profile} profile 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        profile(profile: Profile, options?: any): AxiosPromise<Profile> {
-            return localVarFp.profile(profile, options).then((request) => request(axios, basePath));
+        profile(id: string, profile: Profile, options?: any): AxiosPromise<Profile> {
+            return localVarFp.profile(id, profile, options).then((request) => request(axios, basePath));
         },
         /**
          * This method will create a trail tagged to the unique {profile} {id}
          * @summary Records a trail of the User Profile.
-         * @param {Record} record 
+         * @param {string} id Profile Id &#x60;Unique&#x60;
+         * @param {string} tag Record tag &#x60;Chosen&#x60;
+         * @param {Record} [record] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        record(record: Record, options?: any): AxiosPromise<Record> {
-            return localVarFp.record(record, options).then((request) => request(axios, basePath));
+        record(id: string, tag: string, record?: Record, options?: any): AxiosPromise<Record> {
+            return localVarFp.record(id, tag, record, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -311,25 +294,28 @@ export class UsertrailsApi extends BaseAPI {
     /**
      * This method will create a profile to which you can attach a trail, most important part of this is the {id} keyword.
      * @summary Creates a User Profile for your Product.
+     * @param {string} id Profile Id &#x60;Unique&#x60;
      * @param {Profile} profile 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsertrailsApi
      */
-    public profile(profile: Profile, options?: AxiosRequestConfig) {
-        return UsertrailsApiFp(this.configuration).profile(profile, options).then((request) => request(this.axios, this.basePath));
+    public profile(id: string, profile: Profile, options?: AxiosRequestConfig) {
+        return UsertrailsApiFp(this.configuration).profile(id, profile, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * This method will create a trail tagged to the unique {profile} {id}
      * @summary Records a trail of the User Profile.
-     * @param {Record} record 
+     * @param {string} id Profile Id &#x60;Unique&#x60;
+     * @param {string} tag Record tag &#x60;Chosen&#x60;
+     * @param {Record} [record] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsertrailsApi
      */
-    public record(record: Record, options?: AxiosRequestConfig) {
-        return UsertrailsApiFp(this.configuration).record(record, options).then((request) => request(this.axios, this.basePath));
+    public record(id: string, tag: string, record?: Record, options?: AxiosRequestConfig) {
+        return UsertrailsApiFp(this.configuration).record(id, tag, record, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
