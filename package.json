@@ -1,8 +1,8 @@
 {
-  "name": "usertrails",
+  "name": "@usertrails/usertrails-nodejs",
   "version": "1.0.0",
-  "description": "OpenAPI client for usertrails",
-  "author": "OpenAPI-Generator Contributors",
+  "description": "Client for usertrails",
+  "author": "Usertrails",
   "keywords": [
     "axios",
     "typescript",
