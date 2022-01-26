@@ -1,13 +1,11 @@
 {
-  "name": "@usertrails/usertrails-nodejs",
+  "name": "usertrails",
   "version": "1.0.0",
-  "description": "Client for usertrails",
+  "description": "Usertrails - Signal over noise, one user at a time",
   "author": "Usertrails",
   "keywords": [
     "axios",
     "typescript",
-    "openapi-client",
-    "openapi-generator",
     "usertrails"
   ],
   "license": "Unlicense",
